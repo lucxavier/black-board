@@ -1,0 +1,20 @@
+<div cdkDropListGroup class="d-flex">
+  <div
+    cdkDropList
+    [cdkDropListData]="list"
+    *ngFor="let list of lists"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div class="example-container">
+      <div
+        cdkDrag
+        [cdkDragData]="item"
+        class="example-box"
+        *ngFor="let item of list"
+      >
+        {{ item }}
+      </div>
+    </div>
+  </div>
+</div>
