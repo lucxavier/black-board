@@ -6,12 +6,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { BoardCardComponent } from './board-card/board-card.component';
+import { FormsModule } from '@angular/forms';
+import { CommentItemComponent } from './comment-item/comment-item.component';
 
 
 
 @NgModule({
   declarations: [
-    BoardComponent
+    BoardComponent,
+    BoardCardComponent,
+    CommentItemComponent
   ],
   imports: [
     CommonModule,
@@ -20,6 +25,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatIconModule,
     MatInputModule,
     MatExpansionModule,
+    FormsModule
   ],
   exports:[
     BoardComponent

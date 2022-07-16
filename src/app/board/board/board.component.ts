@@ -1,3 +1,4 @@
+import { BoardService } from './../../services/board.service';
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
@@ -7,31 +8,13 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
 
-  progress = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-  constructor() { }
+  constructor(
+    public boardService: BoardService
+  ) { }
 
   ngOnInit(): void {
+    console.log('Board - INIT')
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -45,10 +28,19 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  lists = [
-    this.done,
-    this.todo,
-    this.progress,
-  ]
+  onDeleteComment(comment: any, columnId: any, item: any){
+    this.boardService.deleteComment(columnId, item.id, comment.id)
+  }
+
+  onAddComment(event: {id: number, text: string}, columnId: number){
+    this.boardService.addComment(columnId, event.id, event.text)
+  }
+
+  onChangeLike(event: {card: any, increase: boolean}, columnId: number){
+    const {card: {id}, increase } = event
+    this.boardService.changeLike(id, columnId, increase)
+  }
+
+
 
 }

@@ -1,8 +1,46 @@
-<div cdkDropListGroup class="d-flex">
+<div class="container-fluid">
+  <div cdkDropListGroup class="row">
+    <div
+      class="col-sm-4"
+      *ngFor="let column of boardService.getBoard() | async"
+    >
+      <h2>{{ column.title }}</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="column.list"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          cdkDrag
+          class="example-box"
+          [ngStyle]="{ background: column.color }"
+          *ngFor="let item of column.list"
+        >
+          <app-board-card
+            [item]="item"
+            (emitText)="onAddComment($event, column.id)"
+            (emitCardItem)="onChangeLike($event, column.id)"
+          >
+            <div *ngFor="let comment of item.comments">
+              <app-comment-item
+                [comment]="comment"
+                (emitComment)="onDeleteComment($event, column.id, item)"
+              ></app-comment-item>
+            </div>
+          </app-board-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div cdkDropListGroup class="d-flex">
   <div
     cdkDropList
     [cdkDropListData]="list"
-    *ngFor="let list of lists"
+    *ngFor="let list of data"
     class="example-list"
     (cdkDropListDropped)="drop($event)"
   >
@@ -17,4 +55,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
