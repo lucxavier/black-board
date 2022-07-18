@@ -41,6 +41,14 @@ export class BoardComponent implements OnInit {
     this.boardService.changeLike(id, columnId, increase)
   }
 
+  onDeleteCard(cardId: number, columnID: number){
+    this.boardService.deleteCard(cardId, columnID)
+  }
+
+  onDeleteColumn(columnId: number) {
+    this.boardService.deleteColumn(columnId)
+  }
+
 
 
 }

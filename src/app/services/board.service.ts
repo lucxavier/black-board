@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Column } from '../models/column.model';
 
 @Injectable({
   providedIn: 'root'
@@ -133,6 +134,21 @@ constructor() { }
       }
     })
     this.board$.next([...this.board])
+  }
+
+  deleteCard(cardId: number, columnId: number){
+    this.board = this.board.map((column: any) => {
+      if(column.id === columnId){
+        column.list = column.list.filter((card: any) => card.id !== cardId);
+      }
+      return column
+    })
+    this.board$.next([...this.board])
+  }
+
+  deleteColumn(columnId: number) {
+    this.board = this.board.filter((column: Column) => column.id !== columnId);
+    this.board$.next([...this.board]);
   }
 
 }
