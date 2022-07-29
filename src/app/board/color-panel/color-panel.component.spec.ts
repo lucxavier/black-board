@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommentItemComponent } from './comment-item.component';
+import { ColorPanelComponent } from './color-panel.component';
 
-describe('CommentItemComponent', () => {
-  let component: CommentItemComponent;
-  let fixture: ComponentFixture<CommentItemComponent>;
+describe('ColorPanelComponent', () => {
+  let component: ColorPanelComponent;
+  let fixture: ComponentFixture<ColorPanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommentItemComponent ]
+      declarations: [ ColorPanelComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommentItemComponent);
+    fixture = TestBed.createComponent(ColorPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -11,7 +11,9 @@ describe('DialogComponent', () => {
       declarations: [ DialogComponent ]
     })
     .compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(DialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

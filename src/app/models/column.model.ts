@@ -1,16 +1,16 @@
-export interface Comment {
+export interface Comment { 
   id: number,
   text: string,
 }
 
-export interface Card {
+export interface Card { 
   id: number,
   text: string,
   like: number,
   comments: Comment[]
 }
 
-export interface Column {
+export interface Column { 
   id: number,
   title: string,
   color: string,

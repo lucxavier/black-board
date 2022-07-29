@@ -9,18 +9,19 @@
 .example-box {
   padding: 10px 10px 5px 10px;
   border: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(236, 236, 236, 0.87);
   border-radius: 2px;
   cursor: move;
   font-size: 14px;
-  margin-top: 3px;
 }
+
 
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {
@@ -45,4 +46,20 @@
 
 .column-header {
   border: 1px solid rgb(207, 207, 207);
+}
+
+
+  ::ng-deep{
+    .mat-menu-panel{
+        width: 150px !important;
+    }
+  }
+
+.color-painel-title{
+  padding-left: 15px;
+}
+
+.icon-delete{
+  color: red;
+  font-weight: 400;
 }

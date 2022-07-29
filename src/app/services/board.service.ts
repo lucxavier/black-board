@@ -1,85 +1,185 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { BehaviorSubject } from 'rxjs';
-import { Column } from '../models/column.model';
+import { Card, Column, Comment } from '../models/column.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BoardService {
-
   private initBoard = [
     {
       id: 1,
       title: 'Backlog',
-      color: '#ccc',
+      color: '#208eed',
       list: [
         {
           id: 1,
-          text: 'Exemplo de item do card',
-          like: 1,
+          text: 'Desenvolver tela de cadastro',
+          like: 12,
           comments: [
             {
               id: 1,
-              text: 'Algum comentário'
+              text: 'Urgente, priorizar'
             }
           ]
         },
         {
           id: 2,
-          text: 'Exemplo 2222 de item do card',
-          like: 1,
-          comments: [
-            {
-              id: 1,
-              text: 'Algum comentário'
-            }
-          ]
+          text: 'Corrigir bug na tela de login',
+          like: 5,
+          comments: []
+        },
+        {
+          id: 3,
+          text: 'Criar tabela de usuário',
+          like: 0,
+          comments: []
+        },
+        {
+          id: 4,
+          text: 'Criar API',
+          like: 0,
+          comments: []
         },
       ]
     },
     {
       id: 2,
-      title: 'In Progress',
+      title: 'Development',
+      color: '#b36619',
+      list: []
+    },
+    {
+      id: 3,
+      title: 'Testing',
+      color: '#912f84',
+      list: []
+    },
+    {
+      id: 4,
+      title: 'Done',
       color: '#009886',
-      list: [
-        {
-          id: 2,
-          text: 'Exemplo de item do card em Desenvolvimento',
-          like: 3,
-          comments: [
-            {
-              id: 1,
-              text: 'Algum comentário 1'
-            },
-            {
-              id: 2,
-              text: 'Algum comentário 2'
-            },
-            {
-              id: 3,
-              text: 'Algum comentário 3'
-            },
-          ]
-        },
-      ]
+      list: []
     },
   ]
 
-  private board: any[] = this.initBoard;
-  private board$ = new BehaviorSubject<any[]>(this.initBoard)
+  private board: Column[] = this.initBoard
+  private board$ = new BehaviorSubject<Column[]>(this.initBoard)
 
-constructor() { }
-
-  getBoard(){
+  getBoard$() {
     return this.board$.asObservable()
   }
 
-  deleteComment(columnId: any, itemId: any, commentId: any){
-    this.board = this.board.map((column) => {
-      if(column.id === columnId){
-        const list = column.list.map((item: { id: any; comments: any[]; }) => {
-          if(item.id === itemId){
-            item.comments = item.comments.filter((comment: { id: any; }) => {
+  changeColumnColor(color: string, columnId: number) {
+    this.board = this.board.map((column: Column) => {
+      if (column.id === columnId) {
+        column.color = color;
+      }
+      return column;
+    });
+    this.board$.next([...this.board]);
+  }
+
+  addColumn(title: string) {
+    const newColumn: Column = {
+      id: Date.now(),
+      title: title,
+      color: '#009886',
+      list: [],
+    };
+
+    this.board = [...this.board, newColumn];
+    this.board$.next([...this.board]);
+  }
+
+  addCard(text: string, columnId: number) {
+    const newCard: Card = {
+      id: Date.now(),
+      text,
+      like: 0,
+      comments: [],
+    };
+
+    this.board = this.board.map((column: Column) => {
+      if (column.id === columnId) {
+        column.list = [newCard, ...column.list];
+      }
+      return column;
+    });
+
+    this.board$.next([...this.board]);
+  }
+
+  deleteColumn(columnId: number) {
+    this.board = this.board.filter((column: Column) => column.id !== columnId);
+    this.board$.next([...this.board]);
+  }
+
+  deleteCard(cardId: number, columnId: number) {
+    this.board = this.board.map((column: Column) => {
+      if (column.id === columnId) {
+        column.list = column.list.filter((card: Card) => card.id !== cardId);
+      }
+      return column;
+    });
+
+    this.board$.next([...this.board]);
+  }
+
+  changeLike(cardId: number, columnId: number, increase: boolean) {
+    this.board = this.board.map((column: Column) => {
+      if (column.id === columnId) {
+        const list = column.list.map((card: Card) => {
+          if (card.id === cardId) {
+            if (increase) {
+              card.like++;
+            } else {
+              if (card.like > 0) {
+                card.like--;
+              }
+            }
+          }
+          return card;
+        });
+
+        column.list = list;
+        return column;
+      } else {
+        return column;
+      }
+    });
+
+    this.board$.next([...this.board]);
+  }
+
+  addComment(columnId: number, cardId: number, text: string) {
+    this.board = this.board.map((column: Column) => {
+      if (column.id === columnId) {
+        const list = column.list.map((card: Card) => {
+          if (card.id === cardId) {
+            const newComment = {
+              id: Date.now(),
+              text,
+            };
+            card.comments = [newComment, ...card.comments];
+          }
+          return card;
+        });
+
+        column.list = list;
+      }
+      return column;
+    });
+
+    this.board$.next([...this.board]);
+  }
+
+  deleteComment(columnId: number, itemId: number, commentId: number) {
+    this.board = this.board.map((column: Column) => {
+      if(column.id === columnId) {
+        const list = column.list.map((item)=> {
+          if(item.id === itemId) {
+            item.comments = item.comments.filter((comment: Comment) => {
               return comment.id !== commentId
             })
           }
@@ -91,64 +191,4 @@ constructor() { }
     })
     this.board$.next([...this.board])
   }
-
-  addComment(columnId: number, cardId: number, text: string){
-    this.board = this.board.map((column: any) => {
-      if(column.id === columnId){
-        const list = column.list.map((card: any) => {
-          if(card.id === cardId){
-            const newComment = {
-              id: Date.now(),
-              text,
-            }
-            card.comments = [newComment, ...card.comments];
-          }
-          return card;
-        })
-        column.list = list;
-      }
-      return column
-    })
-    this.board$.next([...this.board]);
-  }
-
-  changeLike(cardId: number, columnId: number, increase: boolean){
-    this.board = this.board.map((column) => {
-      if(column.id === columnId){
-        const list = column.list.map((card: { id: any; like: number; }) => {
-          if(card.id === cardId){
-            if(increase){
-              card.like++
-            }else{
-              if(card.like > 0){
-                card.like--;
-              }
-            }
-          }
-          return card;
-        })
-        column.list = list;
-        return column
-      }else{
-        return column
-      }
-    })
-    this.board$.next([...this.board])
-  }
-
-  deleteCard(cardId: number, columnId: number){
-    this.board = this.board.map((column: any) => {
-      if(column.id === columnId){
-        column.list = column.list.filter((card: any) => card.id !== cardId);
-      }
-      return column
-    })
-    this.board$.next([...this.board])
-  }
-
-  deleteColumn(columnId: number) {
-    this.board = this.board.filter((column: Column) => column.id !== columnId);
-    this.board$.next([...this.board]);
-  }
-
 }

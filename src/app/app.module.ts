@@ -8,15 +8,17 @@ import { HeaderModule } from './header/header.module';
 import { BoardModule } from './board/board.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HeaderModule,
-    BoardModule,
+    BoardModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

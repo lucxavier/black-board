@@ -16,6 +16,6 @@ export class CommentItemComponent implements OnInit {
   }
 
   onCommentEmit(comment: Comment) {
-    this.emitComment.emit(comment)
+    this.emitComment.emit(comment);
   }
 }

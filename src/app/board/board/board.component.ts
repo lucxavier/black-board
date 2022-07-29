@@ -1,11 +1,11 @@
-import { BoardService } from './../../services/board.service';
 import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { BoardService } from 'src/app/services/board.service';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
 
@@ -14,10 +14,41 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('Board - INIT')
+    console.log('BOARD - INIT')
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  onColorChange(color: string, columnId: number) {
+    this.boardService.changeColumnColor(color, columnId)
+  }
+
+  onAddCard(text: string, columnId: number) {
+    if(text) {
+      this.boardService.addCard(text, columnId)
+    }
+  }
+
+  onDeleteColumn(columnId: number) {
+    this.boardService.deleteColumn(columnId)
+  }
+
+  onDeleteCard(cardId: number, columnId: number) {
+    this.boardService.deleteCard(cardId, columnId)
+  }
+
+  onChangeLike(event: {card: any, increase: boolean}, columnId: number ) {
+    const { card: { id }, increase } = event
+    this.boardService.changeLike(id, columnId, increase)
+  }
+
+  onAddComment(event: {id: number, text: string}, columnId: number) {
+    this.boardService.addComment(columnId, event.id, event.text)
+  }
+
+  onDeleteComment(comment: { id: any; }, columnId: any, item: { id: any; }) {
+    this.boardService.deleteComment(columnId, item.id, comment.id)
+  }
+
+  drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -27,28 +58,4 @@ export class BoardComponent implements OnInit {
                         event.currentIndex);
     }
   }
-
-  onDeleteComment(comment: any, columnId: any, item: any){
-    this.boardService.deleteComment(columnId, item.id, comment.id)
-  }
-
-  onAddComment(event: {id: number, text: string}, columnId: number){
-    this.boardService.addComment(columnId, event.id, event.text)
-  }
-
-  onChangeLike(event: {card: any, increase: boolean}, columnId: number){
-    const {card: {id}, increase } = event
-    this.boardService.changeLike(id, columnId, increase)
-  }
-
-  onDeleteCard(cardId: number, columnID: number){
-    this.boardService.deleteCard(cardId, columnID)
-  }
-
-  onDeleteColumn(columnId: number) {
-    this.boardService.deleteColumn(columnId)
-  }
-
-
-
 }

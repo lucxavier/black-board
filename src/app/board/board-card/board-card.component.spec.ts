@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BoardCardComponent } from './board-card.component';
 
-describe('BoardCardComponent', () => {
+describe('BoardItemComponent', () => {
   let component: BoardCardComponent;
   let fixture: ComponentFixture<BoardCardComponent>;
 
@@ -11,7 +11,9 @@ describe('BoardCardComponent', () => {
       declarations: [ BoardCardComponent ]
     })
     .compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(BoardCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
